@@ -1,7 +1,7 @@
 //! This module handles the search route of the search engine website.
 
 use crate::{
-    cache::cacher::Cache,
+    cache::Cache,
     config::parser::Config,
     models::{
         aggregation_models::SearchResults,
@@ -145,7 +145,7 @@ pub async fn search(
 /// the cache or from the upstream search engines otherwise it returns an appropriate error.
 async fn results(
     config: web::Data<crate::config::parser::Config>,
-    cache: web::Data<crate::cache::cacher::Cache>,
+    cache: web::Data<crate::cache::Cache>,
     query: &str,
     page: u32,
     search_settings: &server_models::Cookie<'_>,
