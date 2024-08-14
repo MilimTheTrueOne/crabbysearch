@@ -46,7 +46,6 @@ impl SearchEngine for Startpage {
         page: u32,
         user_agent: &str,
         client: &Client,
-        _safe_search: u8,
     ) -> Result<Vec<(String, SearchResult)>, EngineError> {
         // Page number can be missing or empty string and so appropriate handling is required
         // so that upstream server recieves valid page number.

@@ -10,7 +10,7 @@
 /// order to allow the deserializing the json back to struct in aggregate function in
 /// aggregator.rs and create a new struct out of it and then serialize it back to json and pass
 /// it to the template files.
-#[derive(Default)]
+#[derive(Default, Debug, Clone)]
 pub struct Style {
     /// It stores the parsed theme option used to set a theme for the website.
     pub theme: String,
@@ -29,7 +29,7 @@ impl Style {
     ///
     /// * `theme` - It takes the parsed theme option used to set a theme for the website.
     /// * `colorscheme` - It takes the parsed colorscheme option used to set a colorscheme
-    /// for the theme being used.
+    ///     for the theme being used.
     pub fn new(theme: String, colorscheme: String, animation: Option<String>) -> Self {
         Style {
             theme,

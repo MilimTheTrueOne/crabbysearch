@@ -47,7 +47,6 @@ impl SearchEngine for Bing {
         page: u32,
         user_agent: &str,
         client: &Client,
-        _safe_search: u8,
     ) -> Result<Vec<(String, SearchResult)>, EngineError> {
         // Bing uses `start results from this number` convention
         // So, for 10 results per page, page 0 starts at 1, page 1

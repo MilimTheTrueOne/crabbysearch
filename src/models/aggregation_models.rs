@@ -35,7 +35,7 @@ impl SearchResult {
     ///
     /// * `title` - The title of the search result.
     /// * `url` - The url which is accessed when clicked on it
-    /// (href url in html in simple words).
+    ///     (href url in html in simple words).
     /// * `description` - The description of the search result.
     /// * `engine` - The names of the upstream engines from which this results were provided.
     pub fn new(title: &str, url: &str, description: &str, engine: &[&str]) -> Self {
@@ -125,7 +125,7 @@ impl EngineErrorInfo {
     /// # Arguments
     ///
     /// * `error` - It takes the error type which occured while fetching the result from a particular
-    /// search engine.
+    ///     search engine.
     /// * `engine` - It takes the name of the engine that failed to provide the requested search results.
     pub fn new(error: &EngineError, engine: &str) -> Self {
         Self {
@@ -178,11 +178,11 @@ impl SearchResults {
     /// # Arguments
     ///
     /// * `results` - Takes an argument of individual serializable `SearchResult` struct
-    /// and stores it into a vector of `SearchResult` structs.
+    ///     and stores it into a vector of `SearchResult` structs.
     /// * `page_query` - Takes an argument of current page`s search query `q` provided in
-    /// the search url.
+    ///     the search url.
     /// * `engine_errors_info` - Takes an array of structs which contains information regarding
-    /// which engines failed with their names, reason and their severity color name.
+    ///     which engines failed with their names, reason and their severity color name.
     pub fn new(results: Vec<SearchResult>, engine_errors_info: &[EngineErrorInfo]) -> Self {
         Self {
             results,

@@ -3,7 +3,6 @@
 
 use super::user_agent::random_user_agent;
 use crate::config::parser::Config;
-use crate::handler::{file_path, FileType};
 use crate::models::{
     aggregation_models::{EngineErrorInfo, SearchResult, SearchResults},
     engine_models::{EngineError, EngineHandler},
@@ -14,7 +13,6 @@ use futures::stream::FuturesUnordered;
 use regex::Regex;
 use reqwest::{Client, ClientBuilder};
 use std::sync::Arc;
-use std::time::{SystemTime, UNIX_EPOCH};
 use tokio::{
     fs::File,
     io::{AsyncBufReadExt, BufReader},
@@ -61,7 +59,7 @@ type FutureVec =
 /// * `debug` - Accepts a boolean value to enable or disable debug mode option.
 /// * `upstream_search_engines` - Accepts a vector of search engine names which was selected by the
 /// * `request_timeout` - Accepts a time (secs) as a value which controls the server request timeout.
-/// user through the UI or the config file.
+///     user through the UI or the config file.
 ///
 /// # Error
 ///
@@ -71,9 +69,8 @@ type FutureVec =
 pub async fn aggregate(
     query: &str,
     page: u32,
-    config: &Config,
+    config: actix_web::web::Data<crate::config::parser::Config>,
     upstream_search_engines: &[EngineHandler],
-    safe_search: u8,
 ) -> Result<SearchResults, Box<dyn std::error::Error>> {
     let client = CLIENT.get_or_init(|| {
         ClientBuilder::new()
@@ -93,13 +90,6 @@ pub async fn aggregate(
 
     let user_agent: &str = random_user_agent();
 
-    // Add a random delay before making the request.
-    if config.aggregator.random_delay || !config.debug {
-        let nanos = SystemTime::now().duration_since(UNIX_EPOCH)?.subsec_nanos() as f32;
-        let delay = ((nanos / 1_0000_0000 as f32).floor() as u64) + 1;
-        tokio::time::sleep(Duration::from_secs(delay)).await;
-    }
-
     let mut names: Vec<&str> = Vec::with_capacity(0);
 
     // create tasks for upstream result fetching
@@ -112,13 +102,7 @@ pub async fn aggregate(
         let query_partially_cloned = query.clone();
         tasks.push(tokio::spawn(async move {
             search_engine
-                .results(
-                    &query_partially_cloned,
-                    page,
-                    user_agent,
-                    client,
-                    safe_search,
-                )
+                .results(&query_partially_cloned, page, user_agent, client)
                 .await
         }));
     }
@@ -167,25 +151,6 @@ pub async fn aggregate(
             }
             Err(error) => handle_error(&error, engine),
         };
-    }
-
-    if safe_search >= 3 {
-        let mut blacklist_map: Vec<(String, SearchResult)> = Vec::new();
-        filter_with_lists(
-            &mut result_map,
-            &mut blacklist_map,
-            file_path(FileType::BlockList)?,
-        )
-        .await?;
-
-        filter_with_lists(
-            &mut blacklist_map,
-            &mut result_map,
-            file_path(FileType::AllowList)?,
-        )
-        .await?;
-
-        drop(blacklist_map);
     }
 
     let mut results: Vec<SearchResult> = result_map

@@ -7,9 +7,7 @@ use maud::{html, Markup};
 use crate::templates::partials::{
     footer::footer,
     header::header,
-    settings_tabs::{
-        cookies::cookies, engines::engines, general::general, user_interface::user_interface,
-    },
+    settings_tabs::{cookies::cookies, engines::engines, user_interface::user_interface},
 };
 
 /// A function that handles the html code for the settings page view in the search engine frontend.
@@ -27,11 +25,10 @@ use crate::templates::partials::{
 /// This function returns a compiled html markup code on success otherwise returns a standard error
 /// message.
 pub fn settings(
-    safe_search_level: u8,
     colorscheme: &str,
     theme: &str,
     animation: &Option<String>,
-    engine_names: &HashMap<String, bool>,
+    //engine_names: &HashMap<String, bool>,
 ) -> Result<Markup, Box<dyn std::error::Error>> {
     Ok(html!(
         (header(colorscheme, theme, animation))
@@ -46,9 +43,8 @@ pub fn settings(
                   .btn onclick="setActiveTab(this)"{"cookies"}
               }
               .main_container{
-                  (general(safe_search_level))
                   (user_interface(theme, colorscheme, animation)?)
-                  (engines(engine_names))
+                  //(engines(engine_names))
                   (cookies())
                   p class="message"{}
                   button type="submit" onclick="setClientSettings()"{"Save"}

@@ -30,19 +30,16 @@ pub struct Cookie<'a> {
     pub colorscheme: Cow<'a, str>,
     /// It stores the user selected upstream search engines selected from the UI.
     pub engines: Cow<'a, Vec<Cow<'a, str>>>,
-    /// It stores the user selected safe search level from the UI.
-    pub safe_search_level: u8,
 }
 
 impl<'a> Cookie<'a> {
     /// server_models::Cookie contructor function
-    pub fn build(style: &'a Style, mut engines: Vec<Cow<'a, str>>, safe_search_level: u8) -> Self {
+    pub fn build(style: &'a Style, mut engines: Vec<Cow<'a, str>>) -> Self {
         engines.sort();
         Self {
             theme: Cow::Borrowed(&style.theme),
             colorscheme: Cow::Borrowed(&style.colorscheme),
             engines: Cow::Owned(engines),
-            safe_search_level,
         }
     }
 }

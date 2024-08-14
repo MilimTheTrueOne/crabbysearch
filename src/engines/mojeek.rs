@@ -46,7 +46,6 @@ impl SearchEngine for Mojeek {
         page: u32,
         user_agent: &str,
         client: &Client,
-        safe_search: u8,
     ) -> Result<Vec<(String, SearchResult)>, EngineError> {
         // Mojeek uses `start results from this number` convention
         // So, for 10 results per page, page 0 starts at 1, page 1
@@ -75,21 +74,6 @@ impl SearchEngine for Mojeek {
 
         let qss = search_engines.join("%2C");
 
-        // A branchless condition to check whether the `safe_search` parameter has the
-        // value 0 or not. If it is zero then it sets the value 0 otherwise it sets
-        // the value to 1 for all other values of `safe_search`
-        //
-        // Moreover, the below branchless code is equivalent to the following code below:
-        //
-        // ```rust
-        // let safe = if safe_search == 0 { 0 } else { 1 }.to_string();
-        // ```
-        //
-        // For more information on branchless programming. See:
-        //
-        // * https://piped.video/watch?v=bVJ-mWWL7cE
-        let safe = u8::from(safe_search != 0).to_string();
-
         // Mojeek detects automated requests, these are preferences that are
         // able to circumvent the countermeasure. Some of these are
         // not documented in their Search API
@@ -104,7 +88,6 @@ impl SearchEngine for Mojeek {
             ("hp", "minimal"),
             ("lb", "en"),
             ("qss", &qss),
-            ("safe", &safe),
         ];
 
         let mut query_params_string = String::new();
