@@ -11,7 +11,7 @@ use crate::config::Style;
 pub struct SearchParams {
     /// It stores the search parameter option `q` (or query in simple words)
     /// of the search url.
-    pub query: Option<String>,
+    pub q: Option<String>,
     /// It stores the search parameter `page` (or pageno in simple words)
     /// of the search url.
     pub page: Option<u32>,

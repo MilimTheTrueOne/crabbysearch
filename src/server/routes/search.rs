@@ -36,13 +36,13 @@ pub async fn search(
 ) -> Result<HttpResponse, Box<dyn std::error::Error>> {
     let params = web::Query::<SearchParams>::from_query(req.query_string())?;
 
-    if !params.query.as_ref().is_some_and(|q| !q.trim().is_empty()) {
+    if params.q.as_ref().is_some_and(|q| q.trim().is_empty()) || params.q.is_none() {
         return Ok(HttpResponse::TemporaryRedirect()
             .insert_header(("location", "/"))
             .finish());
     }
 
-    let query = params.query.as_ref().unwrap();
+    let query = params.q.as_ref().unwrap().trim();
 
     let cookie = req.cookie("appCookie");
 

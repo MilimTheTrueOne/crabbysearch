@@ -147,7 +147,9 @@ pub async fn aggregate(
         };
     }
 
-    let results: Vec<SearchResult> = result_map.iter().map(|(_, value)| value.clone()).collect();
+    let mut results: Vec<SearchResult> =
+        result_map.iter().map(|(_, value)| value.clone()).collect();
 
+    results.sort_by(|a, b| a.description.len().cmp(&b.description.len()));
     Ok(SearchResults::new(results, &engine_errors_info))
 }

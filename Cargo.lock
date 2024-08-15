@@ -3674,7 +3674,6 @@ dependencies = [
  "scraper",
  "serde",
  "serde_json",
- "tempfile",
  "tokio 1.39.2",
 ]
 
