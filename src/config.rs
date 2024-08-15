@@ -3,8 +3,6 @@
 use figment::{providers::Serialized, Figment};
 use serde::{Deserialize, Serialize};
 
-use crate::models::parser_models::Style;
-
 /// A named struct which stores the parsed config file options.
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Config {
@@ -32,6 +30,35 @@ pub struct Config {
     pub tcp_connection_keep_alive: u8,
     /// It stores the pool idle connection timeout in seconds.
     pub pool_idle_connection_timeout: u8,
+}
+
+/// A named struct which stores,deserializes, serializes and groups the parsed config file options
+/// of theme and colorscheme names into the Style struct which derives the `Clone`, `Serialize`
+/// and Deserialize traits where the `Clone` trait is derived for allowing the struct to be
+/// cloned and passed to the server as a shared data between all routes except `/robots.txt` and
+/// the `Serialize` trait has been derived for allowing the object to be serialized so that it
+/// can be passed to handlebars template files and the `Deserialize` trait has been derived in
+/// order to allow the deserializing the json back to struct in aggregate function in
+/// aggregator.rs and create a new struct out of it and then serialize it back to json and pass
+/// it to the template files.
+#[derive(Default, Debug, Clone, Deserialize, Serialize)]
+pub struct Style {
+    /// It stores the parsed theme option used to set a theme for the website.
+    pub theme: String,
+    /// It stores the parsed colorscheme option used to set a colorscheme for the
+    /// theme being used.
+    pub colorscheme: String,
+    /// It stores the parsed animation option used to set an animation for the
+    /// theme being used.
+    pub animation: Option<String>,
+}
+
+/// Configuration options for the rate limiter middleware.
+pub struct RateLimiter {
+    /// The number of request that are allowed within a provided time limit.
+    pub number_of_requests: u8,
+    /// The time limit in which the quantity of requests that should be accepted.
+    pub time_limit: u8,
 }
 
 impl Default for Config {
