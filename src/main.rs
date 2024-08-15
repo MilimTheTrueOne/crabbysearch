@@ -2,7 +2,7 @@
 //! and register all the routes for the `crabbysearch` meta search engine website.
 
 #![forbid(unsafe_code, clippy::panic)]
-#![deny(missing_docs, clippy::missing_docs_in_private_items, clippy::perf)]
+#![deny(missing_docs, clippy::perf)]
 #![warn(clippy::cognitive_complexity, rust_2018_idioms)]
 
 pub mod cache;
@@ -50,7 +50,7 @@ async fn main() {
         config.port,
     );
 
-    let listener = TcpListener::bind((config.binding_ip.as_str(), config.port))
+    let listener = TcpListener::bind((config.binding_ip.clone(), config.port))
         .expect("could not create TcpListener");
 
     let public_folder_path: &str = file_path(FileType::Theme).unwrap();

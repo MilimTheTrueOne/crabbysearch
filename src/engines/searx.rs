@@ -19,18 +19,19 @@ pub struct Searx {
     parser: SearchResultParser,
 }
 
-impl Searx {
+impl Default for Searx {
     /// creates a Searx parser
-    pub fn new() -> Result<Searx, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 "#urls>.dialog-error>p",
                 ".result",
                 "h3>a",
                 "h3>a",
                 ".content",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

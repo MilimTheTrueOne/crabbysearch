@@ -20,18 +20,19 @@ pub struct Brave {
     parser: SearchResultParser,
 }
 
-impl Brave {
+impl Default for Brave {
     /// Creates the Brave parser.
-    pub fn new() -> Result<Brave, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 "#results h4",
                 "#results [data-pos]",
                 "a > .url",
                 "a",
                 ".snippet-description",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

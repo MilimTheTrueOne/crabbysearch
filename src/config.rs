@@ -4,7 +4,7 @@ use figment::{providers::Serialized, Figment};
 use serde::{Deserialize, Serialize};
 
 /// Struct holding config Options
-#[derive(Debug, Clone, Deserialize, Serialize)]
+#[derive(Debug, Deserialize, Serialize, Clone)]
 pub struct Config {
     /// It stores the parsed port number option on which the server should launch.
     pub port: u16,
@@ -21,7 +21,7 @@ pub struct Config {
     /// It toggles whether to use adaptive HTTP windows
     pub adaptive_window: bool,
     /// It stores all the engine names that were enabled by the user.
-    pub upstream_search_engines: Vec<String>,
+    pub upstream_search_engines: crate::engines::Engines,
     /// It stores the time (secs) which controls the server request timeout.
     pub request_timeout: u8,
     /// Set the keep-alive time for client connections to the HTTP server
@@ -67,15 +67,7 @@ impl Default for Config {
             logging: true,
             debug: false,
             adaptive_window: false,
-            upstream_search_engines: vec![
-                "bing".into(),
-                "brave".into(),
-                "duckduckgo".into(),
-                "librex".into(),
-                "mojeek".into(),
-                "searx".into(),
-                "startpage".into(),
-            ],
+            upstream_search_engines: Default::default(),
             request_timeout: 2,
             tcp_connection_keep_alive: 10,
             pool_idle_connection_timeout: 30,

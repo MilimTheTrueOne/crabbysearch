@@ -20,22 +20,23 @@ pub struct LibreX {
     parser: SearchResultParser,
 }
 
-impl LibreX {
+impl Default for LibreX {
     /// Creates a new instance of LibreX with a default configuration.
     ///
     /// # Returns
     ///
     /// Returns a `Result` containing `LibreX` if successful, otherwise an `EngineError`.
-    pub fn new() -> Result<Self, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 ".text-result-container>p",
                 ".text-result-container",
                 ".text-result-wrapper>a>h2",
                 ".text-result-wrapper>a",
                 ".text-result-wrapper>span",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

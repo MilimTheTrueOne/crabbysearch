@@ -3,6 +3,7 @@
 use crate::{
     cache::Cache,
     config::Config,
+    engines::Engines,
     models::{
         aggregation_models::SearchResults,
         engine_models::EngineHandler,
@@ -47,18 +48,9 @@ pub async fn search(
     let cookie = req.cookie("appCookie");
 
     // Get search settings using the user's cookie or from the server's config
-    let search_settings: server_models::Cookie<'_> = cookie
+    let search_settings: crate::engines::Engines = cookie
         .and_then(|cookie_value| serde_json::from_str(cookie_value.value()).ok())
-        .unwrap_or_else(|| {
-            server_models::Cookie::build(
-                &config.style,
-                config
-                    .upstream_search_engines
-                    .iter()
-                    .map(|e| Cow::Borrowed(e.as_str()))
-                    .collect(),
-            )
-        });
+        .unwrap();
 
     // Closure wrapping the results function capturing local references
     let get_results = |page| results(config.clone(), cache.clone(), query, page, &search_settings);
@@ -140,16 +132,11 @@ async fn results(
     cache: web::Data<crate::cache::Cache>,
     query: &str,
     page: u32,
-    search_settings: &server_models::Cookie<'_>,
+    upstream: &Engines,
 ) -> Result<(SearchResults, String), Box<dyn std::error::Error>> {
     // eagerly parse cookie value to evaluate safe search level
 
-    let cache_key = format!(
-        "search?q={}&page={}&engines={}",
-        query,
-        page,
-        search_settings.engines.join(",")
-    );
+    let cache_key = format!("search?q={}&page={}&engines={:?}", query, page, upstream);
 
     // fetch the cached results json.
     let response = cache.cached_results(&cache_key);
@@ -162,20 +149,8 @@ async fn results(
     // default selected upstream search engines from the config file otherwise
     // parse the non-empty cookie and grab the user selected engines from the
     // UI and use that.
-    let mut results: SearchResults = match search_settings.engines.is_empty() {
-        false => {
-            aggregate(
-                query,
-                page,
-                config,
-                &search_settings
-                    .engines
-                    .iter()
-                    .filter_map(|engine| EngineHandler::new(engine).ok())
-                    .collect::<Vec<EngineHandler>>(),
-            )
-            .await?
-        }
+    let mut results: SearchResults = match true {
+        false => aggregate(query, page, config, &Vec::<EngineHandler>::from(upstream)).await?,
         true => {
             let mut search_results = SearchResults::default();
             search_results.set_no_engines_selected();

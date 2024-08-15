@@ -1,10 +1,12 @@
 //! This module provides the error enum to handle different errors associated while requesting data from
 //! the upstream search engines with the search query provided by the user.
 
+use crate::engines;
+
 use super::aggregation_models::SearchResult;
 use error_stack::{Report, Result, ResultExt};
 use reqwest::Client;
-use std::fmt;
+use std::{fmt, sync::Arc};
 
 /// A custom error type used for handle engine associated errors.
 #[derive(Debug)]
@@ -153,14 +155,17 @@ pub trait SearchEngine: Sync + Send {
 pub struct EngineHandler {
     /// It stores the engine struct wrapped in a box smart pointer as the engine struct implements
     /// the `SearchEngine` trait.
-    engine: Box<dyn SearchEngine>,
+    engine: Arc<dyn SearchEngine>,
     /// It stores the name of the engine to which the struct is associated to.
     name: &'static str,
 }
 
 impl Clone for EngineHandler {
     fn clone(&self) -> Self {
-        Self::new(self.name).unwrap()
+        Self {
+            engine: self.engine.clone(),
+            name: self.name.clone(),
+        }
     }
 }
 
@@ -174,53 +179,13 @@ impl EngineHandler {
     /// # Returns
     ///
     /// It returns an option either containing the value or a none if the engine is unknown
-    pub fn new(engine_name: &str) -> Result<Self, EngineError> {
-        let engine: (&'static str, Box<dyn SearchEngine>) =
-            match engine_name.to_lowercase().as_str() {
-                "duckduckgo" => {
-                    let engine = crate::engines::duckduckgo::DuckDuckGo::new()?;
-                    ("duckduckgo", Box::new(engine))
-                }
-                "searx" => {
-                    let engine = crate::engines::searx::Searx::new()?;
-                    ("searx", Box::new(engine))
-                }
-                "brave" => {
-                    let engine = crate::engines::brave::Brave::new()?;
-                    ("brave", Box::new(engine))
-                }
-                "startpage" => {
-                    let engine = crate::engines::startpage::Startpage::new()?;
-                    ("startpage", Box::new(engine))
-                }
-                "librex" => {
-                    let engine = crate::engines::librex::LibreX::new()?;
-                    ("librex", Box::new(engine))
-                }
-                "mojeek" => {
-                    let engine = crate::engines::mojeek::Mojeek::new()?;
-                    ("mojeek", Box::new(engine))
-                }
-                "bing" => {
-                    let engine = crate::engines::bing::Bing::new()?;
-                    ("bing", Box::new(engine))
-                }
-                _ => {
-                    return Err(Report::from(EngineError::NoSuchEngineFound(
-                        engine_name.to_string(),
-                    )))
-                }
-            };
-
-        Ok(Self {
-            engine: engine.1,
-            name: engine.0,
-        })
+    pub fn new(name: &'static str, engine: Arc<dyn SearchEngine>) -> Self {
+        Self { name, engine }
     }
 
     /// This function converts the EngineHandler type into a tuple containing the engine name and
     /// the associated engine struct.
-    pub fn into_name_engine(self) -> (&'static str, Box<dyn SearchEngine>) {
+    pub fn into_name_engine(self) -> (&'static str, Arc<dyn SearchEngine>) {
         (self.name, self.engine)
     }
 }

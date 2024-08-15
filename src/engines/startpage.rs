@@ -23,18 +23,19 @@ pub struct Startpage {
     parser: SearchResultParser,
 }
 
-impl Startpage {
+impl Default for Startpage {
     /// Creates the Startpage parser.
-    pub fn new() -> Result<Self, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 ".no-results",
                 ".w-gl__result__main",
                 ".w-gl__result-second-line-container>.w-gl__result-title>h3",
                 ".w-gl__result-url",
                 ".w-gl__description",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

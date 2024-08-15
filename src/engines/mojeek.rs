@@ -23,18 +23,19 @@ pub struct Mojeek {
     parser: SearchResultParser,
 }
 
-impl Mojeek {
+impl Default for Mojeek {
     /// Creates the Mojeek parser.
-    pub fn new() -> Result<Self, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 ".result-col",
                 ".results-standard li",
                 "a span.url",
                 "h2 a.title",
                 "p.s",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

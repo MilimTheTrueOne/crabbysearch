@@ -23,18 +23,19 @@ pub struct DuckDuckGo {
     parser: SearchResultParser,
 }
 
-impl DuckDuckGo {
+impl Default for DuckDuckGo {
     /// Creates the DuckDuckGo parser.
-    pub fn new() -> Result<Self, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 ".no-results",
                 ".results>.result",
                 ".result__title>.result__a",
                 ".result__url",
                 ".result__snippet",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 

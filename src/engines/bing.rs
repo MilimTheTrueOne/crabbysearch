@@ -24,18 +24,19 @@ pub struct Bing {
     parser: SearchResultParser,
 }
 
-impl Bing {
+impl Default for Bing {
     /// Creates the Bing parser.
-    pub fn new() -> Result<Self, EngineError> {
-        Ok(Self {
+    fn default() -> Self {
+        Self {
             parser: SearchResultParser::new(
                 ".b_results",
                 ".b_algo",
                 "h2 a",
                 ".tpcn a.tilk",
                 ".b_caption p",
-            )?,
-        })
+            )
+            .expect("somehow you changed the static stings in the binary i guess"),
+        }
     }
 }
 
