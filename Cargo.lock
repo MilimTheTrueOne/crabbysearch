@@ -602,6 +602,32 @@ dependencies = [
 ]
 
 [[package]]
+name = "crabbysearch"
+version = "1.12.1"
+dependencies = [
+ "actix-cors",
+ "actix-files",
+ "actix-web",
+ "async-compression",
+ "async-trait",
+ "cfg-if 1.0.0",
+ "env_logger",
+ "error-stack",
+ "fake-useragent",
+ "figment",
+ "futures 0.3.30",
+ "log",
+ "maud",
+ "mini-moka",
+ "regex",
+ "reqwest 0.12.5",
+ "scraper",
+ "serde",
+ "serde_json",
+ "tokio 1.39.2",
+]
+
+[[package]]
 name = "crc32fast"
 version = "1.4.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3649,32 +3675,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "bd7c23921eeb1713a4e851530e9b9756e4fb0e89978582942612524cf09f01cd"
 dependencies = [
  "rustls-pki-types",
-]
-
-[[package]]
-name = "websurfx"
-version = "1.12.1"
-dependencies = [
- "actix-cors",
- "actix-files",
- "actix-web",
- "async-compression",
- "async-trait",
- "cfg-if 1.0.0",
- "env_logger",
- "error-stack",
- "fake-useragent",
- "figment",
- "futures 0.3.30",
- "log",
- "maud",
- "mini-moka",
- "regex",
- "reqwest 0.12.5",
- "scraper",
- "serde",
- "serde_json",
- "tokio 1.39.2",
 ]
 
 [[package]]

@@ -1,4 +1,4 @@
-//! A module that handles the view for the 404 page in the `websurfx` frontend.
+//! A module that handles the view for the 404 page in the `crabbysearch` frontend.
 
 use crate::templates::partials::{footer::footer, header::header};
 use maud::{html, Markup};

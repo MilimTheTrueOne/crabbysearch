@@ -14,7 +14,7 @@ use actix_web::{get, http::header::ContentType, web, HttpRequest, HttpResponse};
 use std::borrow::Cow;
 use tokio::join;
 
-/// Handles the route of search page of the `websurfx` meta search engine website and it takes
+/// Handles the route of search page of the `crabbysearch` meta search engine website and it takes
 /// two search url parameters `q` and `page` where `page` parameter is optional.
 ///
 /// # Example

@@ -1,4 +1,4 @@
-//! A module that handles the user interface tab for setting page view in the `websurfx` frontend.
+//! A module that handles the user interface tab for setting page view in the `crabbysearch` frontend.
 
 use crate::handler::{file_path, FileType};
 use maud::{html, Markup};

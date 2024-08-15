@@ -1,4 +1,4 @@
-//! A module that handles the header for all the pages in the `websurfx` frontend.
+//! A module that handles the header for all the pages in the `crabbysearch` frontend.
 
 use crate::templates::partials::navbar::navbar;
 use maud::{html, Markup, PreEscaped, DOCTYPE};
@@ -19,7 +19,7 @@ pub fn header(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mar
         html lang="en"
 
         head{
-            title{"Websurfx"}
+            title{"crabbysearch"}
             meta charset="UTF-8";
             meta name="viewport" content="width=device-width, initial-scale=1";
             link href=(format!("static/colorschemes/{colorscheme}.css")) rel="stylesheet" type="text/css";
@@ -31,7 +31,7 @@ pub fn header(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mar
 
         (PreEscaped("<body onload=\"getClientSettings()\">"))
             header{
-                h1{a href="/"{"Websurfx"}}
+                h1{a href="/"{"crabbysearch"}}
                 (navbar())
             }
     )

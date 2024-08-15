@@ -32,12 +32,12 @@ RUN export ARCH=$(uname -m) && \
   else if [ "$CACHE" = "no-cache" ] ; then cargo build --release --target=$ARCH-unknown-linux-musl --no-default-features ; fi ; fi ; fi ; fi
 # Optimise binary size with UPX
 RUN export ARCH=$(uname -m) \
-  && upx --lzma --best /app/target/$ARCH-unknown-linux-musl/release/websurfx \
-  && cp /app/target/$ARCH-unknown-linux-musl/release/websurfx /usr/local/bin/websurfx
+  && upx --lzma --best /app/target/$ARCH-unknown-linux-musl/release/crabbysearch \
+  && cp /app/target/$ARCH-unknown-linux-musl/release/crabbysearch /usr/local/bin/crabbysearch
 
 
 FROM --platform=$BUILDPLATFORM scratch
-COPY --from=builder /app/public/ /opt/websurfx/public/
-VOLUME ["/etc/xdg/websurfx/"]
-COPY --from=builder /usr/local/bin/websurfx /usr/local/bin/websurfx
-CMD ["websurfx"]
+COPY --from=builder /app/public/ /opt/crabbysearch/public/
+VOLUME ["/etc/xdg/crabbysearch/"]
+COPY --from=builder /usr/local/bin/crabbysearch /usr/local/bin/crabbysearch
+CMD ["crabbysearch"]

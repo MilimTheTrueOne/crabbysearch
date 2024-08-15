@@ -1,4 +1,4 @@
-//! A module that handles the view for the about page in the `websurfx` frontend.
+//! A module that handles the view for the about page in the `crabbysearch` frontend.
 
 use maud::{html, Markup, PreEscaped};
 
@@ -51,9 +51,9 @@ pub fn about(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mark
              }
 
              div class="text-block" {
-                h3 class="text-block-title" {"Why Websurfx?"}
+                h3 class="text-block-title" {"Why crabbysearch?"}
                 div class="hero-text-container" {
-                    p class="hero-text" {"Websurfx aggregates results from multiple search engines and presents them in an unbiased manner, filtering out trackers and ads."}
+                    p class="hero-text" {"crabbysearch aggregates results from multiple search engines and presents them in an unbiased manner, filtering out trackers and ads."}
                 }
             }
 
@@ -112,7 +112,7 @@ pub fn about(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mark
                         }
                         div class="feature-card-body" {
                             p {
-                                "Websurfx does not track, store or sell your search data. Your privacy is our priority."
+                                "crabbysearch does not track, store or sell your search data. Your privacy is our priority."
                             }
                         }
                     }
@@ -126,7 +126,7 @@ pub fn about(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mark
                         }
                         div class="feature-card-body" {
                             p {
-                                "The entire project's code is open source and available for free on "{a href="https://github.com/neon-mmd/websurfx"{"GitHub"}}"."
+                                "The entire project's code is open source and available for free on "{a href="https://github.com/MilimTheTrueOne/crabbysearch"{"GitHub"}}"."
                             }
                         }
                     }
@@ -140,7 +140,7 @@ pub fn about(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mark
                         }
                         div class="feature-card-body" {
                             p {
-                                "Websurfx comes with 9 built-in color themes and supports creating custom themes effortlessly."
+                                "crabbysearch comes with 9 built-in color themes and supports creating custom themes effortlessly."
                             }
                         }
                     }
@@ -149,7 +149,7 @@ pub fn about(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mark
 
          }
 
-         h3 class="about-footnote" {"Developed by the "{a href="https://github.com/neon-mmd/websurfx"{"Websurfx team"}}}
+         h3 class="about-footnote" {"Developed by the "{a href="https://github.com/MilimTheTrueOne/crabbysearch"{"crabbysearch team"}}}
         }
         (footer())
     )

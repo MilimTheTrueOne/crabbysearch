@@ -10,7 +10,7 @@ use std::sync::OnceLock;
 /// The constant holding the name of the theme folder.
 const PUBLIC_DIRECTORY_NAME: &str = "public";
 /// The constant holding the name of the common folder.
-const COMMON_DIRECTORY_NAME: &str = "websurfx";
+const COMMON_DIRECTORY_NAME: &str = "crabbysearch";
 /// The constant holding the name of the config file.
 const CONFIG_FILE_NAME: &str = "config.lua";
 /// The constant holding the name of the AllowList text file.
@@ -47,7 +47,7 @@ static FILE_PATHS_FOR_DIFF_FILE_TYPES: OnceLock<HashMap<FileType, Vec<String>>> 
 /// If this function is give the file_type of Theme variant then the theme folder is checked by the
 /// following steps:
 ///
-/// 1. `/opt/websurfx` if it not present here then it fallbacks to the next one (2)
+/// 1. `/opt/crabbysearch` if it not present here then it fallbacks to the next one (2)
 /// 2. Under project folder ( or codebase in other words) if it is not present
 ///    here then it returns an error as mentioned above.
 pub fn file_path(file_type: FileType) -> Result<&'static str, Error> {
@@ -70,7 +70,7 @@ pub fn file_path(file_type: FileType) -> Result<&'static str, Error> {
                 (
                     FileType::Theme,
                     vec![
-                        format!("/opt/websurfx/{}/", PUBLIC_DIRECTORY_NAME),
+                        format!("/opt/crabbysearch/{}/", PUBLIC_DIRECTORY_NAME),
                         format!("./{}/", PUBLIC_DIRECTORY_NAME),
                     ],
                 ),

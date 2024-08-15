@@ -1,4 +1,4 @@
-//! A module that handles the view for the settings page in the `websurfx` frontend.
+//! A module that handles the view for the settings page in the `crabbysearch` frontend.
 
 use std::collections::HashMap;
 

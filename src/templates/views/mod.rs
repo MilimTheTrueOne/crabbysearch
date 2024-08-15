@@ -1,5 +1,5 @@
 //! This module provides other modules to handle view for each individual page in the
-//! `websurfx` frontend.
+//! `crabbysearch` frontend.
 
 pub mod about;
 pub mod index;

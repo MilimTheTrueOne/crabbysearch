@@ -1,4 +1,4 @@
-//! This module provides the functionality to handle different routes of the `websurfx`
+//! This module provides the functionality to handle different routes of the `crabbysearch`
 //! meta search engine website and provide appropriate response to each route/page
 //! when requested.
 
@@ -9,7 +9,7 @@ use crate::{
 use actix_web::{get, http::header::ContentType, web, HttpRequest, HttpResponse};
 use tokio::fs::read_to_string;
 
-/// Handles the route of index page or main page of the `websurfx` meta search engine website.
+/// Handles the route of index page or main page of the `crabbysearch` meta search engine website.
 #[get("/")]
 pub async fn index(config: web::Data<Config>) -> Result<HttpResponse, Box<dyn std::error::Error>> {
     Ok(HttpResponse::Ok().content_type(ContentType::html()).body(
@@ -37,7 +37,7 @@ pub async fn not_found(
     ))
 }
 
-/// Handles the route of robots.txt page of the `websurfx` meta search engine website.
+/// Handles the route of robots.txt page of the `crabbysearch` meta search engine website.
 #[get("/robots.txt")]
 pub async fn robots_data(_req: HttpRequest) -> Result<HttpResponse, Box<dyn std::error::Error>> {
     let page_content: String =
@@ -47,7 +47,7 @@ pub async fn robots_data(_req: HttpRequest) -> Result<HttpResponse, Box<dyn std:
         .body(page_content))
 }
 
-/// Handles the route of about page of the `websurfx` meta search engine website.
+/// Handles the route of about page of the `crabbysearch` meta search engine website.
 #[get("/about")]
 pub async fn about(config: web::Data<Config>) -> Result<HttpResponse, Box<dyn std::error::Error>> {
     Ok(HttpResponse::Ok().content_type(ContentType::html()).body(
@@ -60,7 +60,7 @@ pub async fn about(config: web::Data<Config>) -> Result<HttpResponse, Box<dyn st
     ))
 }
 
-/// Handles the route of settings page of the `websurfx` meta search engine website.
+/// Handles the route of settings page of the `crabbysearch` meta search engine website.
 #[get("/settings")]
 pub async fn settings(
     config: web::Data<Config>,

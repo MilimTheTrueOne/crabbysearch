@@ -1,4 +1,4 @@
-//! A module that handles `navbar` partial for the header partial in the `websurfx` frontend.
+//! A module that handles `navbar` partial for the header partial in the `crabbysearch` frontend.
 
 use maud::{html, Markup};
 

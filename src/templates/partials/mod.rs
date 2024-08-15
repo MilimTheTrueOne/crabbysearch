@@ -1,4 +1,4 @@
-//! This module provides other modules to handle the partials for the views in the `websurfx` frontend.
+//! This module provides other modules to handle the partials for the views in the `crabbysearch` frontend.
 
 pub mod bar;
 pub mod footer;

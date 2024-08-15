@@ -1,4 +1,4 @@
-//! A module that handles the view for the search page in the `websurfx` frontend.
+//! A module that handles the view for the search page in the `crabbysearch` frontend.
 
 use maud::{html, Markup, PreEscaped};
 

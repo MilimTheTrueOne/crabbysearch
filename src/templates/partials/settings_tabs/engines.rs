@@ -1,4 +1,4 @@
-//! A module that handles the engines tab for setting page view in the `websurfx` frontend.
+//! A module that handles the engines tab for setting page view in the `crabbysearch` frontend.
 
 use std::collections::HashMap;
 

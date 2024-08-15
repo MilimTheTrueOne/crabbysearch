@@ -1,4 +1,4 @@
-//! A module that handles `bar` partial for the `search_bar` partial and the home/index/main page in the `websurfx` frontend.
+//! A module that handles `bar` partial for the `search_bar` partial and the home/index/main page in the `crabbysearch` frontend.
 
 use maud::{html, Markup, PreEscaped};
 
