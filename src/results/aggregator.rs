@@ -10,15 +10,9 @@ use crate::models::{
 
 use error_stack::Report;
 use futures::stream::FuturesUnordered;
-use regex::Regex;
 use reqwest::{Client, ClientBuilder};
 use std::sync::Arc;
-use tokio::{
-    fs::File,
-    io::{AsyncBufReadExt, BufReader},
-    task::JoinHandle,
-    time::Duration,
-};
+use tokio::{task::JoinHandle, time::Duration};
 
 /// A constant for holding the prebuilt Client globally in the app.
 static CLIENT: std::sync::OnceLock<Client> = std::sync::OnceLock::new();
@@ -153,77 +147,7 @@ pub async fn aggregate(
         };
     }
 
-    let mut results: Vec<SearchResult> = result_map
-        .iter()
-        .map(|(_, value)| {
-            let mut copy = value.clone();
-            if !copy.url.contains("temu.com") {
-                copy.calculate_relevance(query.as_str())
-            }
-            copy
-        })
-        .collect();
-    sort_search_results(&mut results);
+    let results: Vec<SearchResult> = result_map.iter().map(|(_, value)| value.clone()).collect();
 
     Ok(SearchResults::new(results, &engine_errors_info))
-}
-
-/// Filters a map of search results using a list of regex patterns.
-///
-/// # Arguments
-///
-/// * `map_to_be_filtered` - A mutable reference to a `Vec` of search results to filter, where the filtered results will be removed from.
-/// * `resultant_map` - A mutable reference to a `Vec` to hold the filtered results.
-/// * `file_path` - A `&str` representing the path to a file containing regex patterns to use for filtering.
-///
-/// # Errors
-///
-/// Returns an error if the file at `file_path` cannot be opened or read, or if a regex pattern is invalid.
-pub async fn filter_with_lists(
-    map_to_be_filtered: &mut Vec<(String, SearchResult)>,
-    resultant_map: &mut Vec<(String, SearchResult)>,
-    file_path: &str,
-) -> Result<(), Box<dyn std::error::Error>> {
-    let reader = BufReader::new(File::open(file_path).await?);
-    let mut lines = reader.lines();
-
-    while let Some(line) = lines.next_line().await? {
-        let re = Regex::new(line.trim())?;
-
-        let mut length = map_to_be_filtered.len();
-        let mut idx: usize = Default::default();
-        // Iterate over each search result in the map and check if it matches the regex pattern
-        while idx < length {
-            let ele = &map_to_be_filtered[idx];
-            let ele_inner = &ele.1;
-            match re.is_match(&ele.0.to_lowercase())
-                || re.is_match(&ele_inner.title.to_lowercase())
-                || re.is_match(&ele_inner.description.to_lowercase())
-            {
-                true => {
-                    // If the search result matches the regex pattern, move it from the original map to the resultant map
-                    resultant_map.push(map_to_be_filtered.swap_remove(idx));
-                    length -= 1;
-                }
-                false => idx += 1,
-            };
-        }
-    }
-
-    Ok(())
-}
-/// Sorts  SearchResults by relevance score.
-/// <br> sort_unstable is used as its faster,stability is not an issue on our side.
-/// For reasons why, check out [`this`](https://rust-lang.github.io/rfcs/1884-unstable-sort.html)
-///  # Arguments
-///  * `results` - A mutable slice or Vec of SearchResults
-///  
-fn sort_search_results(results: &mut [SearchResult]) {
-    results.sort_unstable_by(|a, b| {
-        use std::cmp::Ordering;
-
-        b.relevance_score
-            .partial_cmp(&a.relevance_score)
-            .unwrap_or(Ordering::Less)
-    })
 }
