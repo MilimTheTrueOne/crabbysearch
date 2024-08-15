@@ -1,25 +1,23 @@
 //! This module provides the functionality to cache the aggregated results fetched and aggregated
 //! from the upstream search engines in a json format.
 
-use error_stack::Report;
-
 use mini_moka::sync::Cache as MokaCache;
 use mini_moka::sync::ConcurrentCacheExt;
 
 use std::time::Duration;
 
-use crate::{config::parser::Config, models::aggregation_models::SearchResults};
+use crate::{config::Config, models::aggregation_models::SearchResults};
 
-impl Into<SearchResults> for Vec<u8> {
-    fn into(self) -> SearchResults {
-        serde_json::from_slice(&self)
+impl From<Vec<u8>> for SearchResults {
+    fn from(v: Vec<u8>) -> SearchResults {
+        serde_json::from_slice(&v)
             .expect("well, this can only be caused by memory corruption so good luck")
     }
 }
 
-impl Into<Vec<u8>> for &SearchResults {
-    fn into(self) -> Vec<u8> {
-        serde_json::to_vec(self).expect("somehow failed to serialize search results")
+impl From<&SearchResults> for Vec<u8> {
+    fn from(v: &SearchResults) -> Vec<u8> {
+        serde_json::to_vec(v).expect("somehow failed to serialize search results")
     }
 }
 

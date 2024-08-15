@@ -2,7 +2,7 @@
 
 use crate::{
     cache::Cache,
-    config::parser::Config,
+    config::Config,
     models::{
         aggregation_models::SearchResults,
         engine_models::EngineHandler,
@@ -144,7 +144,7 @@ pub async fn search(
 /// It returns the `SearchResults` struct if the search results could be successfully fetched from
 /// the cache or from the upstream search engines otherwise it returns an appropriate error.
 async fn results(
-    config: web::Data<crate::config::parser::Config>,
+    config: web::Data<Config>,
     cache: web::Data<crate::cache::Cache>,
     query: &str,
     page: u32,

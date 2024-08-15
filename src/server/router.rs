@@ -3,7 +3,7 @@
 //! when requested.
 
 use crate::{
-    config::parser::Config,
+    config::Config,
     handler::{file_path, FileType},
 };
 use actix_web::{get, http::header::ContentType, web, HttpRequest, HttpResponse};

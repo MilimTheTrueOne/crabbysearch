@@ -26,7 +26,7 @@ use actix_web::{
     middleware::{Compress, Logger},
     web, App, HttpServer,
 };
-use config::parser::Config;
+use config::Config;
 use handler::{file_path, FileType};
 
 /// Runs the web server

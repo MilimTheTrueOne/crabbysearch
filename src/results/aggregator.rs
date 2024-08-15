@@ -2,7 +2,7 @@
 //! search engines and then removes duplicate results.
 
 use super::user_agent::random_user_agent;
-use crate::config::parser::Config;
+use crate::config::Config;
 use crate::models::{
     aggregation_models::{EngineErrorInfo, SearchResult, SearchResults},
     engine_models::{EngineError, EngineHandler},
@@ -69,7 +69,7 @@ type FutureVec =
 pub async fn aggregate(
     query: &str,
     page: u32,
-    config: actix_web::web::Data<crate::config::parser::Config>,
+    config: actix_web::web::Data<Config>,
     upstream_search_engines: &[EngineHandler],
 ) -> Result<SearchResults, Box<dyn std::error::Error>> {
     let client = CLIENT.get_or_init(|| {

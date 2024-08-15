@@ -1,11 +1,12 @@
-//! This module provides the functionality to parse the lua config and convert the config options
-//! into rust readable form.
+//! Config module
+
+use figment::{providers::Serialized, Figment};
+use serde::{Deserialize, Serialize};
 
 use crate::models::parser_models::Style;
-use std::collections::HashMap;
 
 /// A named struct which stores the parsed config file options.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Config {
     /// It stores the parsed port number option on which the server should launch.
     pub port: u16,
@@ -58,6 +59,9 @@ impl Default for Config {
 impl Config {
     /// Creates a new config based on the environment variables.
     pub fn parse() -> Self {
-        Self::default()
+        Figment::from(Serialized::defaults(Config::default()))
+            .merge(figment::providers::Env::prefixed("SEARCH"))
+            .extract()
+            .unwrap()
     }
 }
