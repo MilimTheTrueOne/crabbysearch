@@ -603,7 +603,7 @@ dependencies = [
 
 [[package]]
 name = "crabbysearch"
-version = "1.12.1"
+version = "0.1.0"
 dependencies = [
  "actix-cors",
  "actix-files",

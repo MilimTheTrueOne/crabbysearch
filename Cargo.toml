@@ -1,6 +1,6 @@
 [package]
 name = "crabbysearch"
-version = "1.12.1"
+version = "0.1.0"
 edition = "2021"
 description = "crabbysearch: a simple meta search engine written in rust."
 repository = "https://github.com/MilimTheTrueOne/crabbysearch"
