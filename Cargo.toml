@@ -24,7 +24,7 @@ serde_json = { version = "1.0.116", default-features = false }
 maud = { version = "0.26.0", default-features = false, features = [
     "actix-web",
 ] }
-scraper = { version = "0.18.1", default-features = false }
+scraper = { version = "0.20.0", default-features = false }
 actix-web = { version = "4.4.0", features = [
     "cookies",
     "macros",
