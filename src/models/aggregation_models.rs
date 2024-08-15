@@ -3,7 +3,7 @@
 
 use super::engine_models::EngineError;
 use serde::{Deserialize, Serialize};
-use smallvec::SmallVec;
+
 #[cfg(any(
     feature = "use-synonyms-search",
     feature = "use-non-static-synonyms-search"
@@ -23,7 +23,7 @@ pub struct SearchResult {
     /// The description of the search result.
     pub description: String,
     /// The names of the upstream engines from which this results were provided.
-    pub engine: SmallVec<[String; 0]>,
+    pub engine: Vec<String>,
     /// The td-tdf score of the result in regards to the title, url and description and the user's query
     pub relevance_score: f32,
 }
