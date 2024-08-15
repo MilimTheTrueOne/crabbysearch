@@ -19,15 +19,9 @@ use crate::{
 /// # Returns
 ///
 /// It returns the compiled html markup code as a result.
-pub fn search(
-    colorscheme: &str,
-    theme: &str,
-    animation: &Option<String>,
-    query: &str,
-    search_results: &SearchResults,
-) -> Markup {
+pub fn search(query: &str, search_results: &SearchResults) -> Markup {
     html!(
-        (header(colorscheme, theme, animation))
+        (header())
         main class="results"{
            (search_bar(&search_results.engine_errors_info, search_results.safe_search_level, query))
            .results_aggregated{

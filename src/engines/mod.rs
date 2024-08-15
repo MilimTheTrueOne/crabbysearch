@@ -26,7 +26,6 @@ pub struct Engines {
     duckduckgo: bool,
     librex: bool,
     mojeek: bool,
-    search_result_parser: bool,
     searx: bool,
     startpage: bool,
 }
@@ -39,7 +38,6 @@ impl Default for Engines {
             duckduckgo: true,
             librex: true,
             mojeek: true,
-            search_result_parser: true,
             searx: true,
             startpage: true,
         }

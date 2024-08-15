@@ -10,8 +10,6 @@ pub struct Config {
     pub port: u16,
     /// It stores the parsed ip address option on which the server should launch
     pub binding_ip: String,
-    /// It stores the theming options for the website.
-    pub style: Style,
     /// Memory cache invalidation time
     pub cache_expiry_time: u64,
     /// It stores the option to whether enable or disable logs.
@@ -32,19 +30,6 @@ pub struct Config {
     pub pool_idle_connection_timeout: u8,
 }
 
-/// A struct holding style config
-#[derive(Default, Debug, Clone, Deserialize, Serialize)]
-pub struct Style {
-    /// It stores the parsed theme option used to set a theme for the website.
-    pub theme: String,
-    /// It stores the parsed colorscheme option used to set a colorscheme for the
-    /// theme being used.
-    pub colorscheme: String,
-    /// It stores the parsed animation option used to set an animation for the
-    /// theme being used.
-    pub animation: Option<String>,
-}
-
 /// Configuration options for the rate limiter middleware.
 pub struct RateLimiter {
     /// The number of request that are allowed within a provided time limit.
@@ -58,11 +43,6 @@ impl Default for Config {
         Self {
             port: 8080,
             binding_ip: "127.0.0.1".into(),
-            style: Style {
-                theme: "simple".into(),
-                colorscheme: "catppuccin-mocha".into(),
-                animation: Some("simple-frosted-glow".into()),
-            },
             cache_expiry_time: 600,
             logging: true,
             debug: false,

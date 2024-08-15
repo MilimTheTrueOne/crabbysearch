@@ -14,9 +14,9 @@ use crate::templates::partials::{bar::bar, footer::footer, header::header};
 /// # Returns
 ///
 /// It returns the compiled html markup code as a result.
-pub fn index(colorscheme: &str, theme: &str, animation: &Option<String>) -> Markup {
+pub fn index() -> Markup {
     html!(
-        (header(colorscheme, theme, animation))
+        (header())
         main class="search-container"{
             (bar(&String::default()))
             (PreEscaped("</div>"))

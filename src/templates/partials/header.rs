@@ -13,7 +13,7 @@ use maud::{html, Markup, PreEscaped, DOCTYPE};
 /// # Returns
 ///
 /// It returns the compiled html markup code for the header as a result.
-pub fn header(colorscheme: &str, theme: &str, animation: &Option<String>) -> Markup {
+pub fn header() -> Markup {
     html!(
         (DOCTYPE)
         html lang="en"
@@ -22,11 +22,8 @@ pub fn header(colorscheme: &str, theme: &str, animation: &Option<String>) -> Mar
             title{"crabbysearch"}
             meta charset="UTF-8";
             meta name="viewport" content="width=device-width, initial-scale=1";
-            link href=(format!("static/colorschemes/{colorscheme}.css")) rel="stylesheet" type="text/css";
-            link href=(format!("static/themes/{theme}.css")) rel="stylesheet" type="text/css";
-            @if animation.is_some() {
-                    link href=(format!("static/animations/{}.css", animation.as_ref().unwrap())) rel="stylesheet" type="text/css";
-            }
+            link href=("static/colorschemes/monokai.css") rel="stylesheet" type="text/css";
+            link href=("static/themes/simple.css") rel="stylesheet" type="text/css";
         }
 
         (PreEscaped("<body onload=\"getClientSettings()\">"))

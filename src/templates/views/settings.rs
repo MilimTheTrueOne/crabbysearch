@@ -5,7 +5,7 @@ use maud::{html, Markup};
 use crate::templates::partials::{
     footer::footer,
     header::header,
-    settings_tabs::{cookies::cookies, engines::engines, user_interface::user_interface},
+    settings_tabs::{cookies::cookies, engines::engines},
 };
 
 /// A function that handles the html code for the settings page view in the search engine frontend.
@@ -23,13 +23,10 @@ use crate::templates::partials::{
 /// This function returns a compiled html markup code on success otherwise returns a standard error
 /// message.
 pub fn settings(
-    colorscheme: &str,
-    theme: &str,
-    animation: &Option<String>,
     engine_names: &Vec<(&'static str, bool)>,
 ) -> Result<Markup, Box<dyn std::error::Error>> {
     Ok(html!(
-        (header(colorscheme, theme, animation))
+        (header())
         main class="settings"{
            h1{"Settings"}
            hr;
@@ -41,7 +38,6 @@ pub fn settings(
                   .btn onclick="setActiveTab(this)"{"cookies"}
               }
               .main_container{
-                  (user_interface(theme, colorscheme, animation)?)
                   (engines(&engine_names))
                   (cookies())
                   p class="message"{}

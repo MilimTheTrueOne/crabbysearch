@@ -45,10 +45,11 @@ pub async fn search(
 
     let cookie = req.cookie("appCookie");
 
+    log::info!("{cookie:?}");
+
     // Get search settings using the user's cookie or from the server's config
     let search_settings: crate::engines::Engines = cookie
-        .and_then(|cookie_value| serde_json::from_str(cookie_value.value()).ok())
-        .inspect(|e| log::info!("{e:?}"))
+        .and_then(|cookie_value| serde_json::from_str(&cookie_value.value().to_lowercase()).ok())
         .unwrap_or_default();
 
     // Closure wrapping the results function capturing local references
@@ -99,16 +100,9 @@ pub async fn search(
         cache.cache_results(&results_list, &cache_keys);
     }
 
-    Ok(HttpResponse::Ok().content_type(ContentType::html()).body(
-        crate::templates::views::search::search(
-            &config.style.colorscheme,
-            &config.style.theme,
-            &config.style.animation,
-            query,
-            &results.0,
-        )
-        .0,
-    ))
+    Ok(HttpResponse::Ok()
+        .content_type(ContentType::html())
+        .body(crate::templates::views::search::search(query, &results.0).0))
 }
 
 /// Fetches the results for a query and page. It First checks the redis cache, if that

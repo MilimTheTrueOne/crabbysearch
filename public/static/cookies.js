@@ -10,51 +10,18 @@
  * @returns {void}
  */
 function setClientSettingsOnPage(cookie) {
-  let cookie_value = cookie
-    .split(';')
-    .map((item) => item.split('='))
-    .reduce((acc, [_, v]) => (acc = JSON.parse(v)) && acc, {})
-
   // Loop through all select tags and add their values to the cookie dictionary
-  document.querySelectorAll('select').forEach((select_tag) => {
-    switch (select_tag.name) {
-      case 'themes':
-        select_tag.value = cookie_value['theme']
-        break
-      case 'colorschemes':
-        select_tag.value = cookie_value['colorscheme']
-        break
-      case 'animations':
-        select_tag.value = cookie_value['animation']
-        break
-      case 'safe_search_levels':
-        select_tag.value = cookie_value['safe_search_level']
-        break
+  let engines = document.querySelectorAll('.engine')
+
+  document.querySelector('.select_all').checked = true
+
+  engines.forEach((engine) => {
+    engine.checked = cookie[engine.parentNode.parentNode.innerText.trim()];
+    if (!engine.checked) {
+      document.querySelector('.select_all').checked = false
     }
   })
-  let engines = document.querySelectorAll('.engine')
-  let engines_cookie = cookie_value['engines']
 
-  if (engines_cookie.length === engines.length) {
-    document.querySelector('.select_all').checked = true
-    engines.forEach((engine_checkbox) => {
-      engine_checkbox.checked = true
-    })
-  } else {
-    engines.forEach((engines_checkbox) => {
-      engines_checkbox.checked = false
-    })
-    engines_cookie.forEach((engine_name) => {
-      engines.forEach((engine_checkbox) => {
-        if (
-          engine_checkbox.parentNode.parentNode.innerText.trim() ===
-          engine_name.trim()
-        ) {
-          engine_checkbox.checked = true
-        }
-      })
-    })
-  }
 }
 
 /**
@@ -78,7 +45,7 @@ document.addEventListener(
       if (cookie.length) {
         document.querySelector('.cookies input').value = cookie
         // This function displays the user provided settings on the settings page.
-        setClientSettingsOnPage(cookie)
+        setClientSettingsOnPage(JSON.parse(cookie.replace("appCookie=", "")))
       } else {
         document.querySelector('.cookies input').value =
           'No cookies have been saved on your system'

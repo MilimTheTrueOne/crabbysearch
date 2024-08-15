@@ -7,8 +7,8 @@ function toggleAllSelection() {
     .querySelectorAll('.engine')
     .forEach(
       (engine_checkbox) =>
-        (engine_checkbox.checked =
-          document.querySelector('.select_all').checked),
+      (engine_checkbox.checked =
+        document.querySelector('.select_all').checked),
     )
 }
 
@@ -41,34 +41,9 @@ function setClientSettings() {
   // Create an object to store the user's preferences
   let cookie_dictionary = new Object()
 
-  // Loop through all select tags and add their values to the cookie dictionary
-  document.querySelectorAll('select').forEach((select_tag) => {
-    switch (select_tag.name) {
-      case 'themes':
-        cookie_dictionary['theme'] = select_tag.value
-        break
-      case 'colorschemes':
-        cookie_dictionary['colorscheme'] = select_tag.value
-        break
-      case 'animations':
-        cookie_dictionary['animation'] = select_tag.value || null
-        break
-      case 'safe_search_levels':
-        cookie_dictionary['safe_search_level'] = Number(select_tag.value)
-        break
-    }
-  })
-
-  // Loop through all engine checkboxes and add their values to the cookie dictionary
-  let engines = []
-
   document.querySelectorAll('.engine').forEach((engine_checkbox) => {
-    if (engine_checkbox.checked) {
-      engines.push(engine_checkbox.parentNode.parentNode.innerText.trim())
-    }
+    cookie_dictionary[engine_checkbox.parentNode.parentNode.innerText.trim()] = engine_checkbox.checked
   })
-
-  cookie_dictionary['engines'] = engines
 
   // Set the expiration date for the cookie to 1 year from the current date
   let expiration_date = new Date()
@@ -89,67 +64,3 @@ function setClientSettings() {
   }, 10000)
 }
 
-/**
- * This functions gets the saved cookies if it is present on the user's machine If it
- * is available then it is parsed and converted to an object which is then used to
- * retrieve the preferences that the user had selected previously and is then loaded in the
- * website otherwise the function does nothing and the default server side settings are loaded.
- */
-function getClientSettings() {
-  // Get the appCookie from the user's machine
-  let cookie = decodeURIComponent(document.cookie)
-
-  // If the cookie is not empty, parse it and use it to set the user's preferences
-  if (cookie.length) {
-    let cookie_value = cookie
-      .split(';')
-      .map((item) => item.split('='))
-      .reduce((acc, [_, v]) => (acc = JSON.parse(v)) && acc, {})
-
-    let links = Array.from(document.querySelectorAll('link'))
-
-    // A check to determine whether the animation link exists under the head tag or not.
-    // If it does not exists then create and add a new animation link under the head tag
-    // and update the other link tags href according to the settings provided by the user
-    // via the UI. On the other hand if it does exist then just update all the link tags
-    // href according to the settings provided by the user via the UI.
-    if (!links.some((item) => item.href.includes('static/animations'))) {
-      if (cookie_value['animation']) {
-        let animation_link = document.createElement('link')
-        animation_link.href = `static/animations/${cookie_value['animation']}.css`
-        animation_link.rel = 'stylesheet'
-        animation_link.type = 'text/css'
-        document.querySelector('head').appendChild(animation_link)
-      }
-      // Loop through all link tags and update their href values to match the user's preferences
-      links.forEach((item) => {
-        if (item.href.includes('static/themes')) {
-          item.href = `static/themes/${cookie_value['theme']}.css`
-        } else if (item.href.includes('static/colorschemes')) {
-          item.href = `static/colorschemes/${cookie_value['colorscheme']}.css`
-        }
-      })
-    } else {
-      // Loop through all link tags and update their href values to match the user's preferences
-      links.forEach((item) => {
-        if (item.href.includes('static/themes')) {
-          item.href = `static/themes/${cookie_value['theme']}.css`
-        } else if (item.href.includes('static/colorschemes')) {
-          item.href = `static/colorschemes/${cookie_value['colorscheme']}.css`
-        } else if (
-          item.href.includes('static/animations') &&
-          cookie_value['animation']
-        ) {
-          item.href = `static/colorschemes/${cookie_value['animation']}.css`
-        }
-      })
-      if (!cookie_value['animation']) {
-        document
-          .querySelector('head')
-          .removeChild(
-            links.filter((item) => item.href.includes('static/animations')),
-          )
-      }
-    }
-  }
-}
