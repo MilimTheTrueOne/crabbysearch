@@ -40,7 +40,7 @@ async fn main() {
         .init();
 
     log::info!(
-        "started server on port {} and IP {}",
+        "starting server on port {} and IP {}",
         config.port,
         config.binding_ip
     );

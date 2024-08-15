@@ -3,7 +3,7 @@
 use figment::{providers::Serialized, Figment};
 use serde::{Deserialize, Serialize};
 
-/// A named struct which stores the parsed config file options.
+/// Struct holding config Options
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct Config {
     /// It stores the parsed port number option on which the server should launch.
@@ -32,15 +32,7 @@ pub struct Config {
     pub pool_idle_connection_timeout: u8,
 }
 
-/// A named struct which stores,deserializes, serializes and groups the parsed config file options
-/// of theme and colorscheme names into the Style struct which derives the `Clone`, `Serialize`
-/// and Deserialize traits where the `Clone` trait is derived for allowing the struct to be
-/// cloned and passed to the server as a shared data between all routes except `/robots.txt` and
-/// the `Serialize` trait has been derived for allowing the object to be serialized so that it
-/// can be passed to handlebars template files and the `Deserialize` trait has been derived in
-/// order to allow the deserializing the json back to struct in aggregate function in
-/// aggregator.rs and create a new struct out of it and then serialize it back to json and pass
-/// it to the template files.
+/// A struct holding style config
 #[derive(Default, Debug, Clone, Deserialize, Serialize)]
 pub struct Style {
     /// It stores the parsed theme option used to set a theme for the website.
