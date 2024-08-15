@@ -1,7 +1,5 @@
 //! A module that handles the view for the settings page in the `crabbysearch` frontend.
 
-use std::collections::HashMap;
-
 use maud::{html, Markup};
 
 use crate::templates::partials::{
@@ -28,7 +26,7 @@ pub fn settings(
     colorscheme: &str,
     theme: &str,
     animation: &Option<String>,
-    //engine_names: &HashMap<String, bool>,
+    engine_names: &Vec<(&'static str, bool)>,
 ) -> Result<Markup, Box<dyn std::error::Error>> {
     Ok(html!(
         (header(colorscheme, theme, animation))
@@ -44,7 +42,7 @@ pub fn settings(
               }
               .main_container{
                   (user_interface(theme, colorscheme, animation)?)
-                  //(engines(engine_names))
+                  (engines(&engine_names))
                   (cookies())
                   p class="message"{}
                   button type="submit" onclick="setClientSettings()"{"Save"}

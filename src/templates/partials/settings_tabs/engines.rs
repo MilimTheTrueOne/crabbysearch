@@ -1,7 +1,5 @@
 //! A module that handles the engines tab for setting page view in the `crabbysearch` frontend.
 
-use std::collections::HashMap;
-
 use maud::{html, Markup};
 
 /// A functions that handles the html code for the engines tab for the settings page for the search page.
@@ -14,7 +12,7 @@ use maud::{html, Markup};
 /// # Returns
 ///
 /// It returns the compiled html markup code for the engines tab.
-pub fn engines(engine_names: &HashMap<String, bool>) -> Markup {
+pub fn engines(engine_names: &Vec<(&str, bool)>) -> Markup {
     html!(
         div class="engines tab"{
            h1{"Engines"}
@@ -26,7 +24,7 @@ pub fn engines(engine_names: &HashMap<String, bool>) -> Markup {
                // Checks whether all the engines are selected or not if they are then the
                // checked `select_all` button is rendered otherwise the unchecked version
                // is rendered.
-               @if engine_names.values().all(|selected| *selected){
+               @if engine_names.iter().all(|selected| selected.1){
                    .toggle_btn{
                       label class="switch"{
                          input type="checkbox" class="select_all" onchange="toggleAllSelection()" checked;

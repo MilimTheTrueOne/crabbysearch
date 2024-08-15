@@ -80,3 +80,18 @@ impl From<&Engines> for Vec<EngineHandler> {
         v
     }
 }
+
+impl Engines {
+    /// Returns a list of all engines
+    pub fn list(&self) -> Box<[&'static str]> {
+        Box::new([
+            "duckduckgo",
+            "searx",
+            "brave",
+            "startpage",
+            "librex",
+            "mojeek",
+            "bing",
+        ])
+    }
+}

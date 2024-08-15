@@ -1,10 +1,8 @@
 //! This module provides the error enum to handle different errors associated while requesting data from
 //! the upstream search engines with the search query provided by the user.
 
-use crate::engines;
-
 use super::aggregation_models::SearchResult;
-use error_stack::{Report, Result, ResultExt};
+use error_stack::{Result, ResultExt};
 use reqwest::Client;
 use std::{fmt, sync::Arc};
 
@@ -152,21 +150,13 @@ pub trait SearchEngine: Sync + Send {
 }
 
 /// A named struct which stores the engine struct with the name of the associated engine.
+#[derive(Clone)]
 pub struct EngineHandler {
     /// It stores the engine struct wrapped in a box smart pointer as the engine struct implements
     /// the `SearchEngine` trait.
     engine: Arc<dyn SearchEngine>,
     /// It stores the name of the engine to which the struct is associated to.
     name: &'static str,
-}
-
-impl Clone for EngineHandler {
-    fn clone(&self) -> Self {
-        Self {
-            engine: self.engine.clone(),
-            name: self.name.clone(),
-        }
-    }
 }
 
 impl EngineHandler {

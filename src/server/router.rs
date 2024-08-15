@@ -70,7 +70,12 @@ pub async fn settings(
             &config.style.colorscheme,
             &config.style.theme,
             &config.style.animation,
-            //&config.upstream_search_engines,
+            &config
+                .upstream_search_engines
+                .list()
+                .iter()
+                .map(|n| (*n, true))
+                .collect(),
         )?
         .0,
     ))

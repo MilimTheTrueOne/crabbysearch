@@ -5,14 +5,12 @@ use crate::{
     config::Config,
     engines::Engines,
     models::{
-        aggregation_models::SearchResults,
-        engine_models::EngineHandler,
-        server_models::{self, SearchParams},
+        aggregation_models::SearchResults, engine_models::EngineHandler,
+        server_models::SearchParams,
     },
     results::aggregator::aggregate,
 };
 use actix_web::{get, http::header::ContentType, web, HttpRequest, HttpResponse};
-use std::borrow::Cow;
 use tokio::join;
 
 /// Handles the route of search page of the `crabbysearch` meta search engine website and it takes
@@ -50,7 +48,8 @@ pub async fn search(
     // Get search settings using the user's cookie or from the server's config
     let search_settings: crate::engines::Engines = cookie
         .and_then(|cookie_value| serde_json::from_str(cookie_value.value()).ok())
-        .unwrap();
+        .inspect(|e| log::info!("{e:?}"))
+        .unwrap_or_default();
 
     // Closure wrapping the results function capturing local references
     let get_results = |page| results(config.clone(), cache.clone(), query, page, &search_settings);
@@ -149,7 +148,7 @@ async fn results(
     // default selected upstream search engines from the config file otherwise
     // parse the non-empty cookie and grab the user selected engines from the
     // UI and use that.
-    let mut results: SearchResults = match true {
+    let mut results: SearchResults = match false {
         false => aggregate(query, page, config, &Vec::<EngineHandler>::from(upstream)).await?,
         true => {
             let mut search_results = SearchResults::default();
